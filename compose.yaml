@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: nexus
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Copy .env.example to .env}
+      POSTGRES_DB: nexusinsight
+    ports: ["127.0.0.1:5434:5432"]
+    volumes: ["insight_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexus -d nexusinsight"]
+      interval: 3s
+      retries: 20
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://nexus:${POSTGRES_PASSWORD:?Copy .env.example to .env}@db:5432/nexusinsight
+      API_KEY: ${API_KEY:?Set API_KEY}
+      ORGANIZATION_ID: ${ORGANIZATION_ID}
+      WEB_ORIGIN: http://localhost:5174
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      db: {condition: service_healthy}
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    ports: ["127.0.0.1:8081:80"]
+volumes:
+  insight_data:
