@@ -2,7 +2,7 @@
 
 Plataforma de análisis de operaciones multisectoriales. Convierte instantáneas de datos en indicadores, con trazabilidad y sin doble conteo.
 
-[![CI](https://github.com/idrovodario16/nexusinsight-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/idrovodario16/nexusinsight-analytics/actions/workflows/ci.yml) · [Demo web](https://idrovodario16.github.io/nexusinsight-analytics/) · [Código de NexusCore](https://github.com/idrovodario16/nexuscore-platform) · [Arquitectura compartida](https://github.com/idrovodario16/nexus-architecture)
+[![CI](https://github.com/idrovodario16/nexusinsight-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/idrovodario16/nexusinsight-analytics/actions/workflows/ci.yml) · [Demo web](https://nexusinsight-idrovodario16-demo.brownlyric131.chatgpt.site/) · [Código de NexusCore](https://github.com/idrovodario16/nexuscore-platform) · [Arquitectura compartida](https://github.com/idrovodario16/nexus-architecture)
 
 ## Qué puedes probar
 
@@ -24,7 +24,7 @@ La barra lateral incluye el enlace al otro producto y una vista que explica la i
 | Integración | Descargar/subir JSON entre demos | Relay HTTP con checkpoint y reintentos |
 | Interfaz conectada a API | **No implementada en este MVP** | API utilizable con HTTP y scripts |
 
-**GitHub Pages solo sirve el frontend.** No ejecuta Python, PostgreSQL ni procesos de integración. Las claves nunca se introducen en la demo ni se incluyen en el código del frontend. La demo es una experiencia funcional autónoma; el backend es un servicio separado que debes ejecutar para probar sus rutas reales.
+**Sites y GitHub Pages sirven aquí solo el frontend.** No ejecuta Python, PostgreSQL ni procesos de integración. Las claves nunca se introducen en la demo ni se incluyen en el código del frontend. La demo es una experiencia funcional autónoma; el backend es un servicio separado que debes ejecutar para probar sus rutas reales.
 
 ## Cómo se complementan
 
@@ -134,7 +134,7 @@ npm run build
 
 Para Python: `cd api`, `python -m pip install -r requirements.txt`, `python -m pytest -q`. Las pruebas de integración requieren PostgreSQL y `RUN_INTEGRATION=1`, junto con las variables de conexión y acceso. Sin ese indicador se omiten explícitamente; no se simula una validación real de PostgreSQL. CI levanta PostgreSQL 16 y ejecuta esas pruebas. Ver [estrategia y criterios](docs/testing.md).
 
-El flujo `ci.yml` valida reglas, compila la web y construye los contenedores. `pages.yml` publica la demo después de una CI exitosa en main; requiere seleccionar **Settings → Pages → Source → GitHub Actions** una vez. El historial de Actions muestra el estado real de cada verificación.
+La demo enlazada arriba se aloja en **Sites**, con acceso público. El código fuente y los README están en GitHub. El flujo `ci.yml` valida reglas, compila la web y construye los contenedores. Se incluye `pages.yml` como alternativa opcional para GitHub Pages: requiere seleccionar **Settings → Pages → Source → GitHub Actions** y ejecutar el flujo de despliegue. Un cambio en GitHub no actualiza automáticamente Sites; hay que publicar una nueva versión de la compilación. El historial de Actions muestra el estado real de cada verificación.
 
 ## Alcance y evolución
 
@@ -143,3 +143,5 @@ Este MVP permite demostrar una solución completa en su flujo principal, con lí
 Siguientes etapas: interfaz conectada a API, identidad OIDC/RBAC, múltiples organizaciones por despliegue con pruebas de aislamiento, auditoría de actor y cambios, formularios configurables, métricas temporales avanzadas, broker de mensajes y observabilidad distribuida. La analítica predictiva no está implementada.
 
 Autor: **Darío Idrovo** · Licencia [MIT](LICENSE).
+
+Consulta [cómo se publicaron las demos](docs/deployment.md), sus límites y cómo actualizar el alojamiento.
