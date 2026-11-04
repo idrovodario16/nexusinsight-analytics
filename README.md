@@ -1,5 +1,7 @@
 # NexusInsight
 
+**Resumen técnico:** análisis descriptivo de operaciones con TypeScript/JavaScript y React, más una API Python/FastAPI. Base de datos PostgreSQL y consultas SQL para indicadores. Arquitectura modular con ingesta, validación, inbox para deduplicación y modelo analítico propio. Admite fuentes compatibles sin depender de NexusCore. Demo React con localStorage; API ejecutable por separado.
+
 Plataforma de análisis de operaciones multisectoriales. Convierte instantáneas de datos en indicadores, con trazabilidad y sin doble conteo.
 
 [![CI](https://github.com/idrovodario16/nexusinsight-analytics/actions/workflows/ci.yml/badge.svg)](https://github.com/idrovodario16/nexusinsight-analytics/actions/workflows/ci.yml) · [Demo web](https://nexusinsight-idrovodario16-demo.brownlyric131.chatgpt.site/) · [Código de NexusCore](https://github.com/idrovodario16/nexuscore-platform) · [Arquitectura compartida](https://github.com/idrovodario16/nexus-architecture)
