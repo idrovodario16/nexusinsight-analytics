@@ -14,7 +14,7 @@ class PostgresRepository:
             for event in events:
                 payload = event.model_dump_json()
                 inserted = conn.execute(text('''INSERT INTO inbox(event_id,organization_id,payload)
-                    VALUES(:id,:org,CAST(:payload AS jsonb)) ON CONFLICT(event_id) DO NOTHING RETURNING event_id'''),
+                    VALUES(:id,:org,CAST(:payload AS jsonb)) ON CONFLICT(organization_id,event_id) DO NOTHING RETURNING event_id'''),
                     {'id': str(event.event_id), 'org': str(event.organization_id), 'payload': payload}).first()
                 if not inserted:
                     continue

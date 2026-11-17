@@ -43,6 +43,9 @@ jobs:
       - run: python -m pip install -r api/requirements.txt
       - run: python migrate.py
         working-directory: api
+      - name: Verify migration replay is safe
+        run: python migrate.py
+        working-directory: api
       - run: python -m pytest -q
         working-directory: api
       - run: docker build -f api/Dockerfile -t nexus-api-ci .
