@@ -17,7 +17,7 @@ services:
       dockerfile: api/Dockerfile
     environment:
       DATABASE_URL: postgresql+psycopg://nexus:${POSTGRES_PASSWORD:?Copy .env.example to .env}@db:5432/nexusinsight
-      API_KEY: ${API_KEY:?Set API_KEY}
+      API_KEY: ${API_KEY:-}
       ORGANIZATION_ID: ${ORGANIZATION_ID}
       WEB_ORIGIN: http://localhost:5174
     ports: ["127.0.0.1:8000:8000"]

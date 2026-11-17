@@ -103,7 +103,7 @@ curl http://localhost:8000/v1/metrics \
   -H "X-Organization-ID: $ORGANIZATION_ID"
 ```
 
-En PowerShell usa `curl.exe` y las variables `$env:API_KEY`, `$env:ORGANIZATION_ID`. Consulta el [contrato OpenAPI](docs/openapi.json) para cuerpos y respuestas. La API solo acepta la organización configurada para esta instancia. No hay un proveedor de identidad, gestión de usuarios ni RBAC de producción implementados aún.
+En PowerShell usa `curl.exe` y las variables `$env:API_KEY`, `$env:ORGANIZATION_ID`. Consulta el [contrato OpenAPI](docs/openapi.json) para cuerpos y respuestas. En modo anterior la API acepta una organización por instancia; el registro opcional de credenciales permite varias empresas con permisos independientes (ver fase 1). No hay un proveedor de identidad, gestión de usuarios ni RBAC de producción implementados aún.
 
 ## Arquitectura y archivos
 
@@ -154,3 +154,11 @@ Consulta [cómo se publicaron las demos](docs/deployment.md), sus límites y có
 ## Integración
 
 Consulta [Nexus Architecture](https://github.com/idrovodario16/nexus-architecture) para el recorrido de exportación/importación JSON y la ejecución del relay HTTP. Las demos no se sincronizan automáticamente.
+
+## Fase 1 · acceso multiempresa de integración
+
+La API v1 admite credenciales por empresa con permisos explícitos read/write y conserva el modo anterior de una empresa. Ver [configuración, revisión de arquitectura, migración y límites](docs/phase1-tenant-access.md). Core e Insight siguen siendo productos independientes; esta fase no incorpora identidad SaaS de producción.
+
+## Fase 2 · aislamiento en PostgreSQL
+
+Las tablas empresariales incorporan RLS y contexto de empresa por transacción. El modo REQUIRE_DATABASE_ISOLATION=1 exige una cuenta restringida y migraciones aplicadas. Consulta [despliegue, alcance y pruebas](docs/phase2-database-isolation.md); la cuenta administradora del Compose de desarrollo no aplica esta barrera.
