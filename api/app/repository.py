@@ -1,16 +1,37 @@
 from sqlalchemy import create_engine, text
+from contextlib import contextmanager
+from uuid import UUID
+import os
+from app.database_security import verify_database_isolation
 from app.domain import Event, Operation
 
 class PostgresRepository:
     def __init__(self, url):
         self.engine = create_engine(url, pool_pre_ping=True)
+        if os.environ.get('REQUIRE_DATABASE_ISOLATION') == '1':
+            try:
+                verify_database_isolation(self.engine)
+            except Exception:
+                self.engine.dispose()
+                raise
+
+    @contextmanager
+    def tenant(self, org):
+        org = str(UUID(str(org)))
+        with self.engine.begin() as conn:
+            conn.execute(text("SELECT set_config('nexus.organization_id', :org, true)"), {'org': org})
+            yield conn
 
     def ingest(self, events):
+        if not events:
+            return {'accepted_events': 0, 'duplicate_events': 0}
+        tenants = {e.organization_id for e in events}
+        if len(tenants) != 1:
+            raise ValueError('A batch must belong to one organization')
+        org = str(next(iter(tenants)))
         accepted = 0
-        with self.engine.begin() as conn:
-            # Serialize same-tenant batches and sort to avoid cross-row deadlocks.
-            for tenant in sorted(set(str(e.organization_id) for e in events)):
-                conn.execute(text('SELECT pg_advisory_xact_lock(hashtext(:org))'), {'org': tenant})
+        with self.tenant(org) as conn:
+            conn.execute(text('SELECT pg_advisory_xact_lock(hashtext(:org))'), {'org': org})
             for event in events:
                 payload = event.model_dump_json()
                 inserted = conn.execute(text('''INSERT INTO inbox(event_id,organization_id,payload)
@@ -39,7 +60,7 @@ class PostgresRepository:
             query += ' AND status=:status'
             params['status'] = status
         query += ' ORDER BY created_at DESC,id LIMIT :limit OFFSET :offset'
-        with self.engine.connect() as conn:
+        with self.tenant(org) as conn:
             return [Operation.model_validate(dict(r)) for r in conn.execute(text(query), params).mappings()]
 
     def aggregate(self, org, sector=None, status=None):
@@ -55,7 +76,7 @@ class PostgresRepository:
         if status:
             query += ' AND status=:status'
             params['status'] = status
-        with self.engine.connect() as conn:
+        with self.tenant(org) as conn:
             row = dict(conn.execute(text(query), params).mappings().one())
         row = {k: int(v) for k, v in row.items()}
         row['completion'] = round(row['completed'] / row['total'] * 100, 2) if row['total'] else 0
