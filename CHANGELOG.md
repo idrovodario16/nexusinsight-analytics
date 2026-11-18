@@ -1,5 +1,11 @@
 # Cambios
 
+## 2026-11-18 · Identidad de operaciones importadas
+
+- La importación JSON normaliza los UUID antes de comparar empresas y fusionar revisiones. El mismo identificador en mayúsculas/minúsculas ya no duplica operaciones ni indicadores.
+- En cada importación se reconcilian también las filas existentes, conservando la revisión mayor y sin modificar los datos de entrada. Un lote inválido sigue rechazándose completo.
+- Regresiones reproducidas antes de corregir y hoja de ruta actualizada. Pendiente: alerta de seguridad en dependencias de desarrollo detectada por npm audit.
+
 ## 2026-11-17 · Fase 2
 
 - RLS en tablas empresariales, contexto transaccional y roles de ejecución mínimos.
