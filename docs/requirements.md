@@ -23,7 +23,7 @@ Revisión: 2026-11-18. Las fases 1/2 están incorporadas en main ([PR #1](https:
 | Prioridad | Historia | Estado observado | Terminado cuando… |
 | --- | --- | --- | --- |
 | P0 | Identidad de operaciones importadas | Corrección propuesta en ambos productos | UUID equivalentes no duplican filas ni métricas, se conserva la revisión mayor, empresas distintas siguen separadas y un lote inválido no modifica el estado; pruebas web y compilación aprobadas |
-| P0 | Dependencias de desarrollo | npm audit detectó 5 entradas de severidad alta en la cadena de Vite/picomatch | Resolver GHSA-fc5q-39xc-vjpf con versiones compatibles, locks reproducibles, audit sin la alerta y pruebas/compilación de ambos productos aprobadas |
+| P0 | Dependencias de desarrollo | Revisión 19/11: aviso GHSA-fc5q-39xc-vjpf retirado el 18/11; npm audit web sin alertas, sin cambiar paquetes | Revalidar avisos vigentes y compatibilidad antes de actualizar; conservar locks reproducibles y pruebas/build aprobados |
 | P0 | Administración de empresas y usuarios | Credenciales de integración configurables; sin administración de usuarios en Insight | Gestión de credenciales y permisos por empresa con revocación probada; identidad de usuarios integrada sin acceso directo a la base de Core |
 | P0 | Insight conectado al backend | Demo e ingestión API disponibles; interfaz conectada pendiente | Modos demo/API explícitos, paginación y errores visibles, E2E de consulta e ingestión contra la API de Insight |
 | P0 | Identidad OIDC y RBAC | Pendiente | Operador/analista/admin autorizados por claims y tenant; pruebas de expiración y revocación aprobadas |
