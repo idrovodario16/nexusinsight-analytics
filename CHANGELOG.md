@@ -1,5 +1,11 @@
 # Cambios
 
+## 2026-11-20 · Fechas de eventos según el contrato v1
+
+- Se rechazan fechas Unix numéricas o cadenas numéricas en `occurred_at`, `created_at` y `updated_at`, antes de invocar al repositorio. El lote completo devuelve 422.
+- Se conservan las fechas ISO 8601 con zona horaria y los objetos datetime usados al leer PostgreSQL. La validación se ajusta al contrato v1 ya documentado; no requiere migración de esquema ni modifica registros existentes.
+- Regresiones HTTP reproducidas antes de la corrección, pruebas de compatibilidad interna y hoja de ruta revisada con estados y criterios verificables.
+
 ## 2026-11-17 · Fase 2
 
 - RLS en tablas empresariales, contexto transaccional y roles de ejecución mínimos.

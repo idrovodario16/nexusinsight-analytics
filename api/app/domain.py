@@ -1,7 +1,20 @@
 from datetime import datetime
-from typing import List, Literal
+from typing import Annotated, List, Literal
 from uuid import UUID
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, field_validator, model_validator
+
+
+def require_timestamp_text(value):
+    # Database reads already contain datetime objects. JSON events must use text,
+    # rather than Pydantic's implicit conversion from Unix seconds/milliseconds.
+    if isinstance(value, datetime):
+        return value
+    if not isinstance(value, str) or 'T' not in value.upper():
+        raise ValueError('Timestamp must be an ISO 8601 datetime string')
+    return value
+
+
+Timestamp = Annotated[datetime, BeforeValidator(require_timestamp_text)]
 
 class Operation(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -12,8 +25,8 @@ class Operation(BaseModel):
     status: Literal['pending', 'in_progress', 'completed', 'cancelled']
     amount_cents: int = Field(strict=True, ge=0, le=1000000000)
     revision: int = Field(strict=True, ge=1)
-    created_at: datetime
-    updated_at: datetime
+    created_at: Timestamp
+    updated_at: Timestamp
 
     @field_validator('created_at', 'updated_at')
     @classmethod
@@ -36,7 +49,7 @@ class Event(BaseModel):
     schema_version: Literal[1]
     source: Literal['nexuscore']
     organization_id: UUID
-    occurred_at: datetime
+    occurred_at: Timestamp
     data: Operation
 
     @model_validator(mode='after')
