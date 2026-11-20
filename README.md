@@ -126,6 +126,7 @@ Ambos incluyen `contracts/`, `examples/`, `docs/`, Dockerfiles y CI. Se empieza 
 - Tasa de finalización: completadas / total × 100; con cero registros devuelve 0.
 - Estados terminales: `completed` y `cancelled`. No se pueden reabrir en Core.
 - Revisionado: inicia en 1; cada cambio de estado aumenta la revisión en la misma transacción que su evento.
+- Importación JSON: los UUID se normalizan a minúsculas antes de comparar empresas y operaciones. Un reenvío que cambia solo la capitalización conserva una única fila y la revisión mayor. En la siguiente importación también se reconcilian duplicados equivalentes existentes en el navegador, sin modificar los datos originales; los lotes inválidos se rechazan completos.
 - Fechas en eventos JSON: `occurred_at`, `created_at` y `updated_at` requieren texto ISO 8601 con fecha/hora separadas por `T` y zona horaria, por ejemplo `2026-11-20T09:00:00Z` o `2026-11-20T09:00:00-05:00`. Números Unix y cadenas numéricas devuelven 422 y se rechaza el lote completo antes de enviarlo al repositorio.
 - El esquema usa UUID, fechas ISO 8601 con zona horaria y contrato versionado. No hay borrado físico de operaciones en la API.
 
