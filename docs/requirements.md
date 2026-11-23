@@ -18,11 +18,12 @@ Validación de entradas; secretos fuera del frontend; queries parametrizadas; l�
 
 ## Hoja de ruta verificable
 
-Revisión: 2026-11-21. Las fases 1/2 están incorporadas en main ([PR #1](https://github.com/idrovodario16/nexusinsight-analytics/pull/1) y [PR #2](https://github.com/idrovodario16/nexusinsight-analytics/pull/2)), con CI aprobada. Las filas parciales no anuncian sus criterios pendientes como terminados. Una prueba omitida no satisface el criterio correspondiente.
+Revisión: 2026-11-23. Las fases 1/2 están incorporadas en main ([PR #1](https://github.com/idrovodario16/nexusinsight-analytics/pull/1) y [PR #2](https://github.com/idrovodario16/nexusinsight-analytics/pull/2)), con CI aprobada. Las filas parciales no anuncian sus criterios pendientes como terminados. Una prueba omitida no satisface el criterio correspondiente.
 
 | Prioridad | Historia | Estado observado | Terminado cuando… |
 | --- | --- | --- | --- |
-| P0 | Fechas con zona horaria en demos | Corrección propuesta en ambos productos | UTC y offsets positivos/negativos se importan en los tres campos sin cambiar el texto; exportar/reimportar conserva revisión y unicidad; fechas sin zona o inválidas se rechazan sin modificar el estado; pruebas y build aprobados |
+| P1 | Disponibilidad de PostgreSQL | Incorporado en Insight PR #6; CI aprobada | Pruebas verifican 200/503, ausencia de detalles sensibles, no-cache, recuperación y liberación de conexiones; CI comprueba SELECT 1 con rol restringido |
+| P0 | Fechas con zona horaria en demos | Insight PR #5 pendiente de revisión; Core PR #6 incorporado | UTC y offsets positivos/negativos se importan en los tres campos sin cambiar el texto; exportar/reimportar conserva revisión y unicidad; fechas sin zona o inválidas se rechazan sin modificar el estado; pruebas y build aprobados |
 | P0 | Fechas del contrato v1 | Incorporado en PR #4; CI aprobada | Los tres campos temporales rechazan enteros, decimales y texto numérico con 422 sin invocar ingesta; ISO con zona horaria y lectura datetime de PostgreSQL conservan compatibilidad; CI con PostgreSQL aprobada |
 | P0 | Identidad de operaciones importadas | Incorporado en Insight PR #3 y Core PR #4; CI aprobada | UUID equivalentes no duplican filas ni métricas, se conserva la revisión mayor, empresas distintas siguen separadas y un lote inválido no modifica el estado; pruebas web y compilación aprobadas |
 | P0 | Dependencias de desarrollo | Revisión 19/11: aviso GHSA-fc5q-39xc-vjpf retirado el 18/11; npm audit web sin alertas, sin cambiar paquetes | Revalidar avisos vigentes y compatibilidad antes de actualizar; conservar locks reproducibles y pruebas/build aprobados |

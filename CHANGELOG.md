@@ -1,5 +1,11 @@
 # Cambios
 
+## 2026-11-23 · Disponibilidad de PostgreSQL
+
+- Nueva ruta pública GET /ready: consulta SELECT 1 con el pool existente y devuelve 200 si la base responde o 503 con mensaje genérico ante un error de base de datos.
+- Respuestas sin caché, sin consultas a datos empresariales y con liberación de la conexión. /health conserva la señal de vida del proceso.
+- Pruebas de fallo/recuperación, sanitización de errores, liberación de conexiones y PostgreSQL con rol restringido. OpenAPI, README y hoja de ruta actualizados; alertas, métricas del relay y recuperación de respaldos siguen pendientes.
+
 ## 2026-11-21 · Fechas con desplazamiento horario en la importación web
 
 - Las demos admiten fechas UTC y offsets ISO 8601 en los tres campos temporales, conforme al contrato v1. Se conserva el texto original y la revisión más reciente.
