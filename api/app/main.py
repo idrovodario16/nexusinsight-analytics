@@ -3,6 +3,8 @@ from typing import List, Literal, Optional
 from uuid import UUID
 from fastapi import Depends, FastAPI, Header, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import SQLAlchemyError
 from app.access import IntegrationAccess, AccessDenied
 from app.domain import Event
 from app.repository import PostgresRepository
@@ -28,6 +30,16 @@ def create_app(repository=None):
     @app.get('/health')
     def health():
         return {'status': 'ok', 'service': 'nexusinsight', 'version': '0.1.0'}
+
+    @app.get('/ready', responses={503: {'description': 'Database unavailable'}})
+    def readiness():
+        try:
+            repo.ping()
+        except SQLAlchemyError:
+            raise HTTPException(503, 'Database unavailable', headers={'Cache-Control': 'no-store'}) from None
+        return JSONResponse(
+            {'status': 'ready', 'service': 'nexusinsight', 'version': '0.1.0'},
+            headers={'Cache-Control': 'no-store'})
 
     @app.post('/v1/events')
     def ingest(events: List[Event], org: UUID = Depends(require('write'))):

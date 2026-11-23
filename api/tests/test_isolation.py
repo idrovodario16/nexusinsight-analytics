@@ -44,6 +44,9 @@ def test_rls_unfiltered_queries_writes_http_and_pool_cleanup(monkeypatch):
         with pytest.raises(RuntimeError, match='non-owner'):
             verify_database_isolation(admin)
         verify_database_isolation(repo.engine)
+        readiness = client.get('/ready')
+        assert readiness.status_code == 200 and readiness.json()['status'] == 'ready'
+        assert readiness.headers['cache-control'] == 'no-store'
         monkeypatch.setenv('REQUIRE_DATABASE_ISOLATION', '1')
         with pytest.raises(RuntimeError, match='non-owner'):
             PostgresRepository(os.environ['DATABASE_URL'])

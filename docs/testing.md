@@ -4,6 +4,7 @@
 2. Dominio API: validación y fórmulas sin requerir red.
 3. HTTP: credenciales ausentes → 401; organización distinta → 403; entrada inválida → 400/422.
    `api/tests/test_event_timestamps.py` reproduce nueve casos de coerción de fechas Unix (enteros, decimales y cadenas numéricas en los tres campos temporales). Todos deben devolver 422 y no invocar la ingesta, incluso si el lote contiene primero un evento válido. También verifica texto ISO con UTC/desplazamiento horario y lectura interna de objetos datetime de PostgreSQL.
+   `api/tests/test_readiness.py` verifica disponibilidad pública sin caché, separación de liveness, errores de base de datos sin detalles sensibles, recuperación y liberación de conexiones en éxito/error. La prueba de aislamiento llama a `/ready` usando el pool de rol restringido de PostgreSQL.
 4. PostgreSQL: inbox idempotente, UPSERT monotónico, aislamiento de consulta y endpoint de indicadores.
 5. Entrega: build Vite, build de contenedores y despliegue Pages tras CI en main.
 

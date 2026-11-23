@@ -15,6 +15,10 @@ class PostgresRepository:
                 self.engine.dispose()
                 raise
 
+    def ping(self):
+        with self.engine.connect() as conn:
+            conn.execute(text('SELECT 1'))
+
     @contextmanager
     def tenant(self, org):
         org = str(UUID(str(org)))
