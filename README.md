@@ -130,6 +130,14 @@ Ambos incluyen `contracts/`, `examples/`, `docs/`, Dockerfiles y CI. Se empieza 
 - Fechas en eventos JSON: `occurred_at`, `created_at` y `updated_at` requieren texto ISO 8601 con fecha/hora separadas por `T` y zona horaria, por ejemplo `2026-11-20T09:00:00Z` o `2026-11-20T09:00:00-05:00`. Números Unix y cadenas numéricas devuelven 422 y se rechaza el lote completo antes de enviarlo al repositorio.
 - El esquema usa UUID, fechas ISO 8601 con zona horaria y contrato versionado. No hay borrado físico de operaciones en la API.
 
+## Salud y disponibilidad de la API
+
+- `GET /health` indica que el proceso está vivo y conserva su respuesta actual aunque PostgreSQL no esté disponible.
+- `GET /ready` ejecuta `SELECT 1` mediante el pool de PostgreSQL. Devuelve 200 con `{"status":"ready","service":"nexusinsight","version":"0.1.0"}` si responde, o 503 con `{"detail":"Database unavailable"}` ante un error de base de datos.
+- La señal de disponibilidad es pública, no requiere credencial ni organización y devuelve `Cache-Control: no-store` tanto con éxito como con error. No consulta tablas empresariales y libera la conexión al terminar.
+- Para monitoreo local: `http://localhost:8000/ready`. Un monitor externo debe apuntar al origen de la API, no al alojamiento estático de la demo.
+- Esta señal comprueba conectividad. La validación de migraciones, la disponibilidad de datos de negocio, el estado del relay, las alertas y los tiempos máximos de respuesta requieren verificaciones adicionales.
+
 ## Pruebas y CI
 
 ```bash

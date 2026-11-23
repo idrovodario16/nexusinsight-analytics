@@ -208,6 +208,79 @@
         }
       }
     },
+    "/ready": {
+      "get": {
+        "summary": "Database connectivity readiness",
+        "description": "Read-only SELECT 1 using the existing connection pool. Does not validate migrations, business data or relay state.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Database responded successfully",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "service",
+                    "version"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "const": "ready"
+                    },
+                    "service": {
+                      "type": "string",
+                      "const": "nexusinsight"
+                    },
+                    "version": {
+                      "type": "string",
+                      "const": "0.1.0"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Database unavailable; connection details are not exposed",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "detail"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string",
+                      "const": "Database unavailable"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/operations": {
       "get": {
         "parameters": [
