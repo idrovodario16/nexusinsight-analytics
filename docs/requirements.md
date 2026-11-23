@@ -22,8 +22,8 @@ Revisión: 2026-11-23. Las fases 1/2 están incorporadas en main ([PR #1](https:
 
 | Prioridad | Historia | Estado observado | Terminado cuando… |
 | --- | --- | --- | --- |
-| P1 | Disponibilidad de PostgreSQL | Ruta /ready propuesta en Insight | Pruebas verifican 200/503, ausencia de detalles sensibles, no-cache, recuperación y liberación de conexiones; CI comprueba SELECT 1 con rol restringido |
-| P0 | Fechas con zona horaria en demos | Pendiente de revisión: Insight PR #5 y Core PR #6; CI aprobada | UTC y offsets se importan conservando texto y revisión; fechas inválidas se rechazan sin modificar el estado; pruebas y build aprobados |
+| P1 | Disponibilidad de PostgreSQL | Incorporado en Insight PR #6; CI aprobada | Pruebas verifican 200/503, ausencia de detalles sensibles, no-cache, recuperación y liberación de conexiones; CI comprueba SELECT 1 con rol restringido |
+| P0 | Fechas con zona horaria en demos | Insight PR #5 pendiente de revisión; Core PR #6 incorporado | UTC y offsets positivos/negativos se importan en los tres campos sin cambiar el texto; exportar/reimportar conserva revisión y unicidad; fechas sin zona o inválidas se rechazan sin modificar el estado; pruebas y build aprobados |
 | P0 | Fechas del contrato v1 | Incorporado en PR #4; CI aprobada | Los tres campos temporales rechazan enteros, decimales y texto numérico con 422 sin invocar ingesta; ISO con zona horaria y lectura datetime de PostgreSQL conservan compatibilidad; CI con PostgreSQL aprobada |
 | P0 | Identidad de operaciones importadas | Incorporado en Insight PR #3 y Core PR #4; CI aprobada | UUID equivalentes no duplican filas ni métricas, se conserva la revisión mayor, empresas distintas siguen separadas y un lote inválido no modifica el estado; pruebas web y compilación aprobadas |
 | P0 | Dependencias de desarrollo | Revisión 19/11: aviso GHSA-fc5q-39xc-vjpf retirado el 18/11; npm audit web sin alertas, sin cambiar paquetes | Revalidar avisos vigentes y compatibilidad antes de actualizar; conservar locks reproducibles y pruebas/build aprobados |

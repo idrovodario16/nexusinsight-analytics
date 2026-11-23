@@ -6,6 +6,12 @@
 - Respuestas sin caché, sin consultas a datos empresariales y con liberación de la conexión. /health conserva la señal de vida del proceso.
 - Pruebas de fallo/recuperación, sanitización de errores, liberación de conexiones y PostgreSQL con rol restringido. OpenAPI, README y hoja de ruta actualizados; alertas, métricas del relay y recuperación de respaldos siguen pendientes.
 
+## 2026-11-21 · Fechas con desplazamiento horario en la importación web
+
+- Las demos admiten fechas UTC y offsets ISO 8601 en los tres campos temporales, conforme al contrato v1. Se conserva el texto original y la revisión más reciente.
+- Pruebas de aceptación de offsets positivos/negativos, rechazo atómico de fechas inválidas y exportación/reimportación sin duplicados.
+- Hoja de ruta revisada: los PRs anteriores ya están incorporados en main; siguen pendientes los requisitos funcionales y de operación documentados.
+
 ## 2026-11-20 · Fechas de eventos según el contrato v1
 
 - Se rechazan fechas Unix numéricas o cadenas numéricas en `occurred_at`, `created_at` y `updated_at`, antes de invocar al repositorio. El lote completo devuelve 422.
