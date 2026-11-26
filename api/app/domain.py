@@ -52,6 +52,14 @@ class Event(BaseModel):
     occurred_at: Timestamp
     data: Operation
 
+    @field_validator('schema_version', mode='before')
+    @classmethod
+    def reject_boolean_version(cls, value):
+        # Python equates True with 1; JSON Schema keeps booleans and numbers distinct.
+        if isinstance(value, bool):
+            raise ValueError('Schema version must be a number, not a boolean')
+        return value
+
     @model_validator(mode='after')
     def same_tenant(self):
         if self.organization_id != self.data.organization_id:

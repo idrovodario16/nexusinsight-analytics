@@ -1,5 +1,11 @@
 # Cambios
 
+## 2026-11-25 · Booleanos en la versión de eventos
+
+- La API rechaza `schema_version: true` con HTTP 422 en vez de convertirlo implícitamente en la versión `1`. Se valida el lote completo antes de llamar a la ingesta.
+- Se mantiene la compatibilidad con los números `1` y `1.0`; el contrato compartido v1, la persistencia y las dependencias no cambian.
+- Dos regresiones HTTP reproducidas antes de corregir y 12 casos de versiones válidas/inválidas. README, estrategia de pruebas y hoja de ruta actualizados; los requisitos funcionales y operativos pendientes conservan su estado.
+
 ## 2026-11-23 · Disponibilidad de PostgreSQL
 
 - Nueva ruta pública GET /ready: consulta SELECT 1 con el pool existente y devuelve 200 si la base responde o 503 con mensaje genérico ante un error de base de datos.
